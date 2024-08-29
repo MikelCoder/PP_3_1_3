@@ -2,24 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User info</title>
+    <title>User Info</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Login</th>
-        <th>Roles</th>
-    </tr>
-    <tr>
-        <td th:text="${user.getId()}"/>
-        <td th:text="${user.getName()}"/>
-        <td th:text="${user.getLogin()}"/>
-        <td th:each="role : ${user.roles}" th:text="${role.role}"/>
-    </tr>
-</table>
-<br>
-<a href="/logout">Logout</a>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">User Information</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Login</th>
+            <th>Roles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getLogin()}"></td>
+            <td th:each="role : ${user.roles}" th:text="${role.role}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center mt-3">
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.3.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

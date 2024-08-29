@@ -3,33 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Login</th>
-        <th>Roles</th>
-        <th>Actions</th>
-    </tr>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.getId()}"/>
-        <td th:text="${user.getName()}"/>
-        <td th:text="${user.getLogin()}"/>
-        <td th:each="role : ${user.roles}" th:text="${role.role}"/>
-        <td>
-            <a th:href="@{/admin/edit(id=${user.id})}">Edit user</a>
-            <br>
-            <a th:href="@{/admin/delete(id=${user.id})}">Delete user</a>
-        </td>
-    </tr>
-</table>
-<br>
-<a href="/admin/new">
-    <input type="submit" value="Add new user">
-</a>
-<br>
-<a href="/logout">Logout</a>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Users List</h1>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Login</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getLogin()}"></td>
+            <td th:each="role : ${user.roles}" th:text="${role.role}" />
+            <td>
+                <a th:href="@{/admin/edit(id=${user.id})}" class="btn btn-warning btn-sm mb-1">Edit</a>
+                <a th:href="@{/admin/delete(id=${user.id})}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center mt-3">
+        <a href="/admin/new" class="btn btn-primary">Add New User</a>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.3.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

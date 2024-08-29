@@ -3,33 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit the user</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-<h1>Edit User</h1>
-<form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
-    <input type="hidden" th:field="*{id}" th:value="${user.getId()}">
+<div class="container form-container">
+    <h1 class="text-center mb-4">Edit User</h1>
+    <form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
+        <input type="hidden" th:field="*{id}" th:value="${user.getId()}">
 
-    <label for="name">Name:</label><br>
-    <input id="name" th:field="*{name}" type="text"/><br>
-    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div><br>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input id="name" th:field="*{name}" type="text" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div>
+        </div>
 
-    <label for="login">Login:</label><br>
-    <input id="login" th:field="*{login}" type="text"/><br>
-    <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Error</div><br>
+        <div class="form-group">
+            <label for="login">Login:</label>
+            <input id="login" th:field="*{login}" type="text" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Error</div>
+        </div>
 
-    <label for="password">Password:</label><br>
-    <input id="password" th:field="*{password}" type="password"/><br>
-    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div><br>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input id="password" th:field="*{password}" type="password" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+        </div>
 
-    <label for="roles">Roles:</label><br>
-    <select id="roles" th:name="roles" th:value="*{roles}">
-        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"/>
-    </select><br><br>
+        <div class="form-group">
+            <label for="roles">Roles:</label>
+            <select id="roles" th:name="roles" th:value="*{roles}" class="form-control">
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
+            </select>
+        </div>
 
-    <input type="submit" value="Save User">
-</form>
+        <button type="submit" class="btn btn-primary btn-block">Save User</button>
+    </form>
 
-<br>
-<a th:href="@{/admin}">Back to the list</a> | <a th:href="@{/logout}">Logout</a>
+    <div class="mt-3 text-center">
+        <a th:href="@{/admin}" class="btn btn-link">Back to the List</a>
+        <a th:href="@{/logout}" class="btn btn-link">Logout</a>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.3.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

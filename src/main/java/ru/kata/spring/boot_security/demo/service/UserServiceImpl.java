@@ -39,9 +39,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        // Инициализируем роли
+//         Инициализируем роли
         Hibernate.initialize(user.getRoles());
         return user;
+//        return userRepository.findUserWithRoles(id); // Используем новый метод для загрузки ролей
+
     }
 
     @Transactional(readOnly = true)
