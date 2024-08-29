@@ -21,12 +21,14 @@
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
     <br>
 
-    <label for="roles">Roles:</label><br>
-    <select id="roles" th:name="roles" th:value="*{roles}">
-        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}" selected/>
-    </select>
-    <br><br>
+    <label>Roles:</label><br>
+    <div th:each="role : ${roles}">
+        <input type="checkbox" th:name="'roles'" th:value="${role.id}" id="role${role.id}"/>
+        <label th:for="'role' + ${role.id}" th:text="${role.role}"></label>
+        <br/>
+    </div>
 
+    <br>
     <input type="submit" value="Add user"/>
 </form>
 <br>

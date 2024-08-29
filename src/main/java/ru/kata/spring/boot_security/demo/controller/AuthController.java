@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid; // Импорт для валидации сущностей
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class AuthController {
@@ -48,21 +51,34 @@ public class AuthController {
     public String newUser(Model model) {
         model.addAttribute("user", new User()); // Добавление нового пустого пользователя в модель
         model.addAttribute("roles", roleService.getListOfRoles()); // Добавление списка ролей в модель
+        roleService.getListOfRoles();
         return "add-user"; // Возврат имени шаблона для отображения формы
     }
 
     // Обработка формы для добавления нового пользователя
     @PostMapping("/admin/addUser")
     public String addUser(@ModelAttribute("user") @Valid User user, // Валидация входных данных
+                          @RequestParam(value = "roles", required = false) Long[] roleIds, // Получаем выбранные роли
                           BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) { // Проверка на ошибки валидации
-            model.addAttribute("user", user); // Возвращаем пользователя с ошибками
-            model.addAttribute("roles", roleService.getListOfRoles()); // Возвращаем список ролей
-            return "add-user"; // Повторный показ формы для ввода
+            model.addAttribute("user", user);
+            model.addAttribute("roles", roleService.getListOfRoles());
+            return "add-user";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Шифрование пароля пользователя
+
+
+        // Назначение ролей пользователю
+        if (roleIds != null) {
+            Set<Role> roles = new HashSet<>();
+            for (Long roleId : roleIds) {
+                Role role = roleService.findRole(roleId); // Получаем роль по ID
+                roles.add(role);
+            }
+            user.setRoles(roles);
+        }
+
         userService.addUser(user); // Сохранение нового пользователя
-        return "redirect:/admin"; // Перенаправление на страницу со списком пользователей
+        return "redirect:/admin";
     }
 
     // Показ формы для редактирования пользователя по его ID
