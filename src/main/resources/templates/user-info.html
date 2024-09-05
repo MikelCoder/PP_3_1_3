@@ -4,12 +4,51 @@
     <meta charset="UTF-8">
     <title>User Info</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+        }
+        .sidebar {
+            min-width: 200px;
+            max-width: 200px;
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .nav-link {
+            color: #495057;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, .075);
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="text-center mb-4">User Information</h1>
-    <table class="table table-hover">
-        <thead>
+<div class="sidebar">
+    <nav class="nav flex-column">
+        <a class="nav-link" href="/admin">Admin</a>
+        <a class="nav-link active" href="/user">User</a>
+    </nav>
+</div>
+<div class="content">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>User Information</h3>
+        <div>
+            <a href="/logout" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+    <table class="table table-hover mt-4">
+        <thead class="thead-light">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -22,13 +61,12 @@
             <td th:text="${user.getId()}"></td>
             <td th:text="${user.getName()}"></td>
             <td th:text="${user.getLogin()}"></td>
-            <td th:each="role : ${user.roles}" th:text="${role.role}"></td>
+            <td>
+                <span th:each="role : ${user.roles}" th:text="${role.role}"></span>
+            </td>
         </tr>
         </tbody>
     </table>
-    <div class="text-center mt-3">
-        <a href="/logout" class="btn btn-danger">Logout</a>
-    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.3.3/dist/umd/popper.min.js"></script>
