@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +35,16 @@ public class AuthController {
 
     // Отображение страницы со списком всех пользователей
     @GetMapping("/admin")
-    public String allUsersPage(Model model) {
-        model.addAttribute("users", userService.getAllUsers()); // Добавление всех пользователей в модель
+    public String allUsersPage(Model model, Authentication authentication) {
+        // Добавление всех пользователей в модель
+        model.addAttribute("users", userService.getAllUsers());
+
+        // Получаем текущего авторизованного пользователя
+        if (authentication != null && authentication.isAuthenticated()) {
+            User currentUser = (User) authentication.getPrincipal(); // Предполагается, что ваш пользователь реализует UserDetails
+            model.addAttribute("loggedUser", currentUser); // Добавляем текущего пользователя в модель
+        }
+
         return "users"; // Возврат имени шаблона для отображения
     }
 
