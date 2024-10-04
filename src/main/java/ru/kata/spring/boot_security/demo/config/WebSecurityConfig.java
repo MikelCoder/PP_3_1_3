@@ -43,10 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();  // Разрешает выход из системы для всех пользователей
     }
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();  // Определяет Bean для кодирования паролей с использованием BCrypt
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,6 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(
                 username -> Optional.of(userService.findUserByLogin(username))  // Загружает пользователя по имени (логину)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"))  // Если пользователь не найден, выбрасывает исключение
-        ).passwordEncoder(getPasswordEncoder());  // Указывает кодировщик паролей
+        ).passwordEncoder(userService.getPasswordEncoder());  // Указывает кодировщик паролей
     }
 }

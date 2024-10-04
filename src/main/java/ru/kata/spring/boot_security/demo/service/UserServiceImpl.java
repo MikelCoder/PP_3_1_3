@@ -2,12 +2,15 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -29,6 +32,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();  // Определяет Bean для кодирования паролей с использованием BCrypt
+    }
+
     private void encodePassword(User user) {
         if (user.getPassword() != null) { // Проверяем, что пароль не пуст
             user.setPassword(passwordEncoder.encode(user.getPassword())); // Кодируем пароль
@@ -38,12 +47,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
 //         Инициализируем роли
         Hibernate.initialize(user.getRoles());
         return user;
-//        return userRepository.findUserWithRoles(id); // Используем новый метод для загрузки ролей
-
     }
 
     @Transactional(readOnly = true)
